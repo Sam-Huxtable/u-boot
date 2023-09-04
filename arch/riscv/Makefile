@@ -24,8 +24,13 @@ ifeq ($(CONFIG_CMODEL_MEDANY),y)
 	CMODEL = medany
 endif
 
+ifeq ($(CONFIG_TARGET_PICOCOM_PC805),y)
+ARCH_FLAGS = -march=rv32gc -mabi=ilp32d \
+         -mcmodel=medany
+else
 ARCH_FLAGS = -march=$(ARCH_BASE)$(ARCH_A)$(ARCH_C) -mabi=$(ABI) \
 	     -mcmodel=$(CMODEL)
+endif
 
 PLATFORM_CPPFLAGS	+= $(ARCH_FLAGS)
 CFLAGS_EFI		+= $(ARCH_FLAGS)

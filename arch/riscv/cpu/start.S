@@ -155,8 +155,8 @@ wait_for_gd_init:
 #endif
 
 	/* Enable cache */
-	jal	icache_enable
-	jal	dcache_enable
+	//jal	icache_enable
+	//jal	dcache_enable
 
 #ifdef CONFIG_DEBUG_UART
 	jal	debug_uart_init

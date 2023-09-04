@@ -34,7 +34,8 @@ DECLARE_GLOBAL_DATA_PTR;
 
 int riscv_get_time(u64 *time)
 {
-	PLMT_BASE_GET();
+	//PLMT_BASE_GET();
+	gd->arch.plmt = (void*)0x0C400000;
 
 	*time = readq((void __iomem *)MTIME_REG(gd->arch.plmt));
 

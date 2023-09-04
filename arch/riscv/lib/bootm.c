@@ -21,8 +21,11 @@
 #include <dm/device.h>
 #include <dm/root.h>
 #include <u-boot/zlib.h>
+#include <opensbi.h>
 
 DECLARE_GLOBAL_DATA_PTR;
+
+static struct fw_dynamic_info opensbi_info;
 
 __weak void board_quiesce_devices(void)
 {
@@ -79,13 +82,15 @@ static void boot_prep_linux(bootm_headers_t *images)
 
 static void boot_jump_linux(bootm_headers_t *images, int flag)
 {
-	void (*kernel)(ulong hart, void *dtb);
+	//void (*kernel)(ulong hart, void *dtb);
+	void (*kernel)(ulong hart, void *dtb, struct fw_dynamic_info *p);
 	int fake = (flag & BOOTM_STATE_OS_FAKE_GO);
 #ifdef CONFIG_SMP
 	int ret;
 #endif
 
-	kernel = (void (*)(ulong, void *))images->ep;
+	//kernel = (void (*)(ulong, void *))images->ep;
+	kernel = (void (*)(ulong, void *, struct fw_dynamic_info*))simple_strtol(env_get("opensbi_addr_r"), NULL, 0);
 
 	bootstage_mark(BOOTSTAGE_ID_RUN_OS);
 
@@ -93,6 +98,13 @@ static void boot_jump_linux(bootm_headers_t *images, int flag)
 	      (ulong)kernel);
 
 	announce_and_cleanup(fake);
+
+    opensbi_info.magic = FW_DYNAMIC_INFO_MAGIC_VALUE;
+    opensbi_info.version = 0x1;
+    opensbi_info.next_addr = images->os.start;
+    opensbi_info.next_mode = FW_DYNAMIC_INFO_NEXT_MODE_S;
+    opensbi_info.options = 0;
+    opensbi_info.boot_hart = 0;
 
 	if (!fake) {
 		if (IMAGE_ENABLE_OF_LIBFDT && images->ft_len) {
@@ -102,7 +114,8 @@ static void boot_jump_linux(bootm_headers_t *images, int flag)
 			if (ret)
 				hang();
 #endif
-			kernel(gd->arch.boot_hart, images->ft_addr);
+			//kernel(gd->arch.boot_hart, images->ft_addr);
+            kernel(gd->arch.boot_hart, images->ft_addr, &opensbi_info);
 		}
 	}
 }

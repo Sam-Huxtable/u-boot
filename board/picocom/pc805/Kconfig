@@ -1,0 +1,38 @@
+if TARGET_PICOCOM_PC805
+
+config SYS_CPU
+	default "pc805"
+
+config SYS_BOARD
+	default "pc805"
+
+config SYS_VENDOR
+	default "picocom"
+
+config SYS_SOC
+	default "pc805_r0"
+
+config SYS_CONFIG_NAME
+	default "pc805"
+
+config ENV_SIZE
+	default 0x2000 if ENV_IS_IN_SPI_FLASH
+
+config ENV_OFFSET
+	default 0x140000 if ENV_IS_IN_SPI_FLASH
+
+config SPL_TEXT_BASE
+	default 0x10104000
+	#default 0x10300000
+
+config SPL_OPENSBI_LOAD_ADDR
+	default 0x01000000
+
+config BOARD_SPECIFIC_OPTIONS # dummy
+	def_bool y
+	select RISCV_PICOCOM
+	select SUPPORT_SPL
+	imply SPL_RAM_SUPPORT
+	imply SPL_RAM_DEVICE
+
+endif

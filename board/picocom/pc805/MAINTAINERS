@@ -1,0 +1,7 @@
+PC805 BOARD
+M:	Wei Zheng <wei.zheng@picocom.com>
+S:	Maintained
+F:	board/picocom/pc805/
+F:	include/configs/pc805.h
+F:	configs/picocom_pc805_rv32_spl_defconfig
+F:	configs/picocom_pc805_rv32_defconfig
