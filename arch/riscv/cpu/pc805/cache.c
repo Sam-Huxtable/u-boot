@@ -97,9 +97,9 @@ void icache_enable(void)
 #if CONFIG_IS_ENABLED(RISCV_MMODE) /* CONFIG_IS_ENABLED(RISCV_MMODE) */
 #if !CONFIG_IS_ENABLED(SYS_ICACHE_OFF)
 	asm volatile (
-		"csrr t1, mcache_ctl\n\t"
+		"csrr t1, 0x7ca\n\t"
 		"ori t0, t1, 0x1\n\t"
-		"csrw mcache_ctl, t0\n\t"
+		"csrw 0x7ca, t0\n\t"
 	);
 #endif
 #else /* CONFIG_IS_ENABLED(RISCV_MMODE) */
@@ -113,9 +113,9 @@ void icache_disable(void)
 #if !CONFIG_IS_ENABLED(SYS_ICACHE_OFF)
 	asm volatile (
 		"fence.i\n\t"
-		"csrr t1, mcache_ctl\n\t"
+		"csrr t1, 0x7ca\n\t"
 		"andi t0, t1, ~0x1\n\t"
-		"csrw mcache_ctl, t0\n\t"
+		"csrw 0x7ca, t0\n\t"
 	);
 #endif
 #else /* CONFIG_IS_ENABLED(RISCV_MMODE) */
@@ -128,9 +128,9 @@ void dcache_enable(void)
 #if CONFIG_IS_ENABLED(RISCV_MMODE) /* CONFIG_IS_ENABLED(RISCV_MMODE) */
 #if !CONFIG_IS_ENABLED(SYS_DCACHE_OFF)
 	asm volatile (
-		"csrr t1, mcache_ctl\n\t"
+		"csrr t1, 0x7ca\n\t"
 		"ori t0, t1, 0x2\n\t"
-		"csrw mcache_ctl, t0\n\t"
+		"csrw 0x7ca, t0\n\t"
 	);
 #endif
 #else /* CONFIG_IS_ENABLED(RISCV_MMODE) */
@@ -149,9 +149,9 @@ void dcache_disable(void)
 #if !CONFIG_IS_ENABLED(SYS_DCACHE_OFF)
 	csr_write(CCTL_REG_MCCTLCOMMAND_NUM, CCTL_L1D_WBINVAL_ALL);
 	asm volatile (
-		"csrr t1, mcache_ctl\n\t"
+		"csrr t1, 0x7ca\n\t"
 		"andi t0, t1, ~0x2\n\t"
-		"csrw mcache_ctl, t0\n\t"
+		"csrw 0x7ca, t0\n\t"
 	);
 #endif
 #else /* CONFIG_IS_ENABLED(RISCV_MMODE) */
@@ -169,7 +169,7 @@ int icache_status(void)
 
 #if CONFIG_IS_ENABLED(RISCV_MMODE) /* CONFIG_IS_ENABLED(RISCV_MMODE) */
 	asm volatile (
-		"csrr t1, mcache_ctl\n\t"
+		"csrr t1, 0x7ca\n\t"
 		"andi	%0, t1, 0x01\n\t"
 		: "=r" (ret)
 		:
@@ -189,7 +189,7 @@ int dcache_status(void)
 #if CONFIG_IS_ENABLED(RISCV_MMODE) /* CONFIG_IS_ENABLED(RISCV_MMODE) */
 #ifdef CONFIG_RISCV_NDS_CACHE
 	asm volatile (
-		"csrr t1, mcache_ctl\n\t"
+		"csrr t1, 0x7ca\n\t"
 		"andi	%0, t1, 0x02\n\t"
 		: "=r" (ret)
 		:
