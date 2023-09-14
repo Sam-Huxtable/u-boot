@@ -5,7 +5,8 @@
 	#size-cells = <1>;
 
 	aliases {
-		serial0 = "/uart@8212000";
+		uart0 = &uart0;
+		spi0 = &qspi0;
 	};
 
 	chosen {
@@ -24,6 +25,13 @@
 		#clock-cells = <0>;
 		compatible = "fixed-clock";
 		clock-frequency = <325000000>;
+		u-boot,dm-spl;
+	};
+
+	apbclk: apbclk {
+		#clock-cells = <0>;
+		compatible = "fixed-clock";
+		clock-frequency = <50000000>;
 		u-boot,dm-spl;
 	};
 
@@ -83,7 +91,7 @@
 		u-boot,dm-spl;
 	};
 
-	uart@8212000 {
+	uart0: uart@8212000 {
 		compatible = "snps,dw-apb-uart";
 		reg = <0x8212000 0x100>;
 		/*clock-frequency = <325000000>;*/
@@ -113,5 +121,23 @@
 		snps,priority = <0 1 2 3 4 5 6 7>;
 		snps,axi-max-burst-len = <4>;
 		u-boot,dm-spl;
+	};
+
+	qspi0: qspi@0820C000 {
+		compatible = "snps,dw-apb-ssi";
+		reg = <0x0820C000 0x1000>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4000000>;
+		clocks = <&apbclk>;
+		clock-names = "spi_clk";
+		//cs-gpio = <&cs_gpio 0>;
+		u-boot,dm-spl;
+		qspi_flash@0 {
+			compatible = "jedec,spi-nor";
+			reg = <0>;
+			spi-max-frequency = <4000000>;
+			u-boot,dm-spl;
+		};
 	};
 };
