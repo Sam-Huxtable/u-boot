@@ -452,7 +452,7 @@ out:
 
 static int spinand_read_id_op(struct spinand_device *spinand, u8 *buf)
 {
-	struct spi_mem_op op = SPINAND_READID_OP(0, spinand->scratchbuf,
+	struct spi_mem_op op = SPINAND_READID_OP(1, spinand->scratchbuf,
 						 SPINAND_MAX_ID_LEN);
 	int ret;
 
