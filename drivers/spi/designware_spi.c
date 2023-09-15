@@ -772,7 +772,7 @@ static const struct udevice_id dw_spi_ids[] = {
 	 */
 	{ .compatible = "altr,socfpga-spi", .data = (ulong)dw_spi_apb_init },
 	{ .compatible = "altr,socfpga-arria10-spi", .data = (ulong)dw_spi_apb_init },
-	{ .compatible = "canaan,kendryte-k210-spi", .data = (ulong)dw_spi_apb_init },
+	{ .compatible = "canaan,kendryte-k210-spi", .data = (ulong)dw_spi_apb_k210_init },
 	{ .compatible = "canaan,kendryte-k210-ssi", .data = (ulong)dw_spi_dwc_init },
 	{ .compatible = "intel,stratix10-spi", .data = (ulong)dw_spi_apb_init },
 	{ .compatible = "intel,agilex-spi", .data = (ulong)dw_spi_apb_init },
