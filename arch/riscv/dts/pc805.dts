@@ -28,13 +28,6 @@
 		u-boot,dm-spl;
 	};
 
-	apbclk: apbclk {
-		#clock-cells = <0>;
-		compatible = "fixed-clock";
-		clock-frequency = <50000000>;
-		u-boot,dm-spl;
-	};
-
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -128,17 +121,16 @@
 		reg = <0x0820C000 0x1000>;
 		#address-cells = <1>;
 		#size-cells = <0>;
-		spi-max-frequency = <4000000>;
-		clocks = <&apbclk>;
+		spi-max-frequency = <45000000>;
+		clocks = <&per_clk>;
 		clock-names = "spi_clk";
-		//cs-gpio = <&cs_gpio 0>;
-		spi-tx-bus-width = <1>;
+		spi-tx-bus-width = <4>;
 		spi-rx-bus-width = <4>;
 		u-boot,dm-spl;
 		qspi_nand@0 {
 			compatible = "spi-nand";
 			reg = <0>;
-			spi-max-frequency = <4000000>;
+			spi-max-frequency = <45000000>;
 			u-boot,dm-spl;
 		};
 	};
