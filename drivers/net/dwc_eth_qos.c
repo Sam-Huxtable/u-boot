@@ -2164,6 +2164,147 @@ struct eqos_config __maybe_unused eqos_imx_config = {
 	.ops = &eqos_imx_ops
 };
 
+static phy_interface_t eqos_get_interface_generic(struct udevice *dev)
+{
+	const char *phy_mode;
+	phy_interface_t interface = PHY_INTERFACE_MODE_NONE;
+
+	debug("%s(dev=%p):\n", __func__, dev);
+
+	phy_mode = fdt_getprop(gd->fdt_blob, dev_of_offset(dev), "phy-mode",
+			       NULL);
+	if (phy_mode)
+		interface = phy_get_interface_by_name(phy_mode);
+
+	return interface;
+}
+
+static int eqos_probe_resources_generic(struct udevice *dev)
+{
+	struct eqos_priv *eqos = dev_get_priv(dev);
+	phy_interface_t interface;
+
+	debug("%s(dev=%p):\n", __func__, dev);
+
+	interface = eqos->config->interface(dev);
+
+	if (interface == PHY_INTERFACE_MODE_NONE) {
+		pr_err("Invalid PHY interface\n");
+		return -EINVAL;
+	}
+
+	debug("%s: OK\n", __func__);
+	return 0;
+}
+
+static int eqos_remove_resources_generic(struct udevice *dev)
+{
+	return 0;
+}
+
+static int eqos_stop_resets_generic(struct udevice *dev)
+{
+	return 0;
+}
+
+static int eqos_start_resets_generic(struct udevice *dev)
+{
+	return 0;
+}
+
+static void eqos_stop_clks_generic(struct udevice *dev)
+{
+	/* empty */
+}
+
+static int eqos_start_clks_generic(struct udevice *dev)
+{
+	return 0;
+}
+
+static int eqos_calibrate_pads_generic(struct udevice *dev)
+{
+	return 0;
+}
+
+static int eqos_disable_calibration_generic(struct udevice *dev)
+{
+	return 0;
+}
+
+__weak u32 get_eqos_csr_clk(void)
+{
+	return 100 * 1000000;
+}
+__weak int eqos_txclk_set_rate(unsigned long rate)
+{
+	return 0;
+}
+
+static int eqos_set_tx_clk_speed_generic(struct udevice *dev)
+{
+	struct eqos_priv *eqos = dev_get_priv(dev);
+	ulong rate;
+	int ret;
+
+	debug("%s(dev=%p):\n", __func__, dev);
+
+	switch (eqos->phy->speed) {
+	case SPEED_1000:
+		rate = 125 * 1000 * 1000;
+		break;
+	case SPEED_100:
+		rate = 25 * 1000 * 1000;
+		break;
+	case SPEED_10:
+		rate = 2.5 * 1000 * 1000;
+		break;
+	default:
+		pr_err("invalid speed %d", eqos->phy->speed);
+		return -EINVAL;
+	}
+
+	ret = eqos_txclk_set_rate(rate);
+	if (ret < 0) {
+		pr_err("eqos (tx_clk, %lu) failed: %d", rate, ret);
+		return ret;
+	}
+
+	return 0;
+}
+
+static ulong eqos_get_tick_clk_rate_generic(struct udevice *dev)
+{
+	return get_eqos_csr_clk();
+}
+
+static struct eqos_ops eqos_generic_ops = {
+	.eqos_inval_desc = eqos_inval_desc_generic,
+	.eqos_flush_desc = eqos_flush_desc_generic,
+	.eqos_inval_buffer = eqos_inval_buffer_generic,
+	.eqos_flush_buffer = eqos_flush_buffer_generic,
+	.eqos_probe_resources = eqos_probe_resources_generic,
+	.eqos_remove_resources = eqos_remove_resources_generic,
+	.eqos_stop_resets = eqos_stop_resets_generic,
+	.eqos_start_resets = eqos_start_resets_generic,
+	.eqos_stop_clks = eqos_stop_clks_generic,
+	.eqos_start_clks = eqos_start_clks_generic,
+	.eqos_calibrate_pads = eqos_calibrate_pads_generic,
+	.eqos_disable_calibration = eqos_disable_calibration_generic,
+	.eqos_set_tx_clk_speed = eqos_set_tx_clk_speed_generic,
+	.eqos_get_tick_clk_rate = eqos_get_tick_clk_rate_imx
+};
+
+struct eqos_config __maybe_unused eqos_generic_config = {
+	.reg_access_always_ok = false,
+	.mdio_wait = 10000,
+	.swr_wait = 50,
+	.config_mac = EQOS_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB,
+	.config_mac_mdio = EQOS_MAC_MDIO_ADDRESS_CR_250_300,
+	.interface = eqos_get_interface_generic,
+	.ops = &eqos_generic_ops
+};
+
 static const struct udevice_id eqos_ids[] = {
 #if IS_ENABLED(CONFIG_DWC_ETH_QOS_TEGRA186)
 	{
@@ -2183,7 +2324,10 @@ static const struct udevice_id eqos_ids[] = {
 		.data = (ulong)&eqos_imx_config
 	},
 #endif
-
+	{
+		.compatible = "snps,dwc-qos-ethernet-4.10",
+		.data = (ulong)&eqos_generic_config
+	},
 	{ }
 };
 

@@ -7,6 +7,7 @@
 	aliases {
 		uart0 = &uart0;
 		spi0 = &qspi0;
+		ethernet0 = &eth0;
 	};
 
 	chosen {
@@ -26,6 +27,12 @@
 		compatible = "fixed-clock";
 		clock-frequency = <325000000>;
 		u-boot,dm-spl;
+	};
+
+	eth_clk: eth_clk {
+		#clock-cells = <0>;
+		compatible = "fixed-clock";
+		clock-frequency = <99840000>;
 	};
 
 	cpus {
@@ -115,6 +122,33 @@
 		snps,axi-max-burst-len = <4>;
 		u-boot,dm-spl;
 	};
+
+	eth0: ethernet@8480000 {
+		compatible = "snps,dwc-qos-ethernet-4.10";
+		clock-names = "phy_ref_clk", "apb_pclk";
+		clocks = <&eth_clk>, <&eth_clk>;
+		interrupt-parent = <&plic0>;
+		interrupts = <6>;
+		reg = <0x08480000 0x2000>;
+		phy-handle = <&phy1>;
+		phy-mode = "rmii";
+		local-mac-address = [82 40 d7 3a 01 53];
+		snps,write-requests = <4>;
+		snps,read-requests = <4>;
+		snps,burst-map = <0x6>;
+		snps,txpbl = <1>;
+		snps,rxpbl = <1>;
+
+		mdio {
+			#address-cells = <0x1>;
+			#size-cells = <0x0>;
+			phy1: phy@1 {
+				compatible = "ethernet-phy-ieee802.3-c22";
+				device_type = "ethernet-phy";
+				reg = <0x1>;
+			};
+		};
+    };
 
 	qspi0: qspi@0820C000 {
 		compatible = "snps,dw-apb-ssi";
