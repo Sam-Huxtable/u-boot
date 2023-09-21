@@ -5,7 +5,7 @@
 	#size-cells = <1>;
 
 	aliases {
-		uart0 = &uart0;
+		serial0 = &uart0;
 		spi0 = &qspi0;
 		ethernet0 = &eth0;
 	};
