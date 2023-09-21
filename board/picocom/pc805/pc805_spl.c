@@ -13,7 +13,6 @@
 
 #include "pc805_vfw4spl.h"
 
-
 void board_init_f(ulong dummy)
 {
     int ret;
@@ -33,11 +32,5 @@ void board_init_f(ulong dummy)
     arch_cpu_init_dm();
 
     preloader_console_init();
-
-    printf("DEBUG: jump to U-BOOT...\n");
-    entry = (void (*)(unsigned int, unsigned int))CONFIG_SYS_TEXT_BASE;
-    entry(0, 0);
-
-    while(1);
 }
 
