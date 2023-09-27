@@ -136,32 +136,3 @@ int board_early_init_f(void)
 	return 0;
 }
 #endif
-
-#ifdef CONFIG_SPL
-void board_boot_order(u32 *spl_boot_list)
-{
-	u8 i;
-	u32 boot_devices[] = {
-#ifdef CONFIG_SPL_RAM_SUPPORT
-		BOOT_DEVICE_RAM,
-#endif
-#ifdef CONFIG_SPL_MMC_SUPPORT
-		BOOT_DEVICE_MMC1,
-#endif
-#ifdef CONFIG_SPL_YMODEM_SUPPORT
-		BOOT_DEVICE_UART,
-#endif
-	};
-
-	for (i = 0; i < ARRAY_SIZE(boot_devices); i++)
-		spl_boot_list[i] = boot_devices[i];
-}
-#endif
-
-#ifdef CONFIG_SPL_LOAD_FIT
-int board_fit_config_name_match(const char *name)
-{
-	/* boot using first FIT config */
-	return 0;
-}
-#endif
