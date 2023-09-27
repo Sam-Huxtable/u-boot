@@ -155,7 +155,7 @@
 		reg = <0x0820C000 0x1000>;
 		#address-cells = <1>;
 		#size-cells = <0>;
-		spi-max-frequency = <45000000>;
+		spi-max-frequency = <40000000>;
 		clocks = <&per_clk>;
 		clock-names = "spi_clk";
 		spi-tx-bus-width = <4>;
@@ -164,7 +164,7 @@
 		qspi_nand@0 {
 			compatible = "spi-nand";
 			reg = <0>;
-			spi-max-frequency = <45000000>;
+			spi-max-frequency = <40000000>;
 			u-boot,dm-spl;
 		};
 	};
