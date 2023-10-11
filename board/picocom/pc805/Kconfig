@@ -26,7 +26,7 @@ config SPL_TEXT_BASE
 	#default 0x10300000
 
 config SPL_OPENSBI_LOAD_ADDR
-	default 0x01000000
+	default 0x80000000
 
 config BOARD_SPECIFIC_OPTIONS # dummy
 	def_bool y
