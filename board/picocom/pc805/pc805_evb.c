@@ -19,6 +19,9 @@
 #include <fdtdec.h>
 #include <dm.h>
 #include <spl.h>
+#include <mtd.h>
+#include <nand.h>
+
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -136,3 +139,25 @@ int board_early_init_f(void)
 	return 0;
 }
 #endif
+
+/*
+ * Main initialization routine
+ */
+void board_nand_init(void)
+{
+	struct mtd_info *mtd;
+	struct udevice *dev;
+	int ret;
+
+	ret = uclass_get_device_by_driver(UCLASS_MTD,
+					  DM_GET_DRIVER(spinand), &dev);
+	if (ret && ret != -ENODEV) {
+		pr_err("Failed to initialize %s. (error %d)\n", "spinand", ret);
+		return;
+	}
+
+	mtd = dev_get_uclass_priv(dev);
+	nand_register(0, mtd);
+
+	nand_curr_device = 0;
+}
