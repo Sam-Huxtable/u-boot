@@ -132,7 +132,6 @@
 		reg = <0x08480000 0x2000>;
 		phy-handle = <&phy1>;
 		phy-mode = "rmii";
-		local-mac-address = [82 40 d7 3a 01 53];
 		snps,write-requests = <4>;
 		snps,read-requests = <4>;
 		snps,burst-map = <0x6>;
