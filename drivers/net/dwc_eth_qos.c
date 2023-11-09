@@ -2296,7 +2296,7 @@ static struct eqos_ops eqos_generic_ops = {
 };
 
 struct eqos_config __maybe_unused eqos_generic_config = {
-	.reg_access_always_ok = false,
+	.reg_access_always_ok = true,
 	.mdio_wait = 10000,
 	.swr_wait = 50,
 	.config_mac = EQOS_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB,
