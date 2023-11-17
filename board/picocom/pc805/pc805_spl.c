@@ -32,6 +32,31 @@ void board_spinand_init(void)
 	mtd = dev_get_uclass_priv(dev);
 }
 
+#define PC805_PLMT_CYCLES_HZ	(30720000)
+#define PC805_PLMT_CYCLES_MS	(PC805_PLMT_CYCLES_HZ / 1000)
+#define PC805_PLMT_CYCLES_US	(PC805_PLMT_CYCLES_MS / 1000)
+/* Returns time in milliseconds */
+ulong get_timer(ulong base)
+{
+	u64 time_cnt = 0;
+
+	riscv_get_time(&time_cnt);
+	return ((time_cnt / PC805_PLMT_CYCLES_MS) - base);
+}
+
+void __udelay(unsigned long usec)
+{
+	u64 start = 0;
+	u64 stop = 0;
+	u64 intval = usec * PC805_PLMT_CYCLES_US;
+
+	riscv_get_time(&start);
+	riscv_get_time(&stop);
+	while ((stop - start) < intval) {
+		riscv_get_time(&stop);
+	}
+}
+
 void board_init_f(ulong dummy)
 {
     int ret;
