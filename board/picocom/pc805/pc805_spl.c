@@ -12,6 +12,8 @@
 #include <spl.h>
 #include <mtd.h>
 #include <dm/uclass.h>
+#include <asm/io.h>
+#include <linux/delay.h>
 
 #include "pc805_vfw4spl.h"
 
@@ -75,7 +77,6 @@ void board_init_f(ulong dummy)
     arch_cpu_init_dm();
 
     preloader_console_init();
-
 }
 
 /* nand_init() - initialize data to make nand usable by SPL */
@@ -210,8 +211,25 @@ void board_boot_order(u32 *spl_boot_list)
 #endif
 	};
 
-	for (i = 0; i < ARRAY_SIZE(boot_devices); i++)
-		spl_boot_list[i] = boot_devices[i];
+	/* read gpio0 value to determine boot type:
+	 * 0. UART boot
+	 * 1. NAND boot
+	 */
+	u32 val = 0;
+	writel(0x1, (void __iomem *)0x8202018);
+	mdelay(1);
+	val = readl((void __iomem *)0x8202028);
+	if(val & 0x01)
+	{
+		printf("Boot select detect: NAND (val = 0x%x)\n", val);
+		for (i = 0; i < ARRAY_SIZE(boot_devices); i++)
+			spl_boot_list[i] = boot_devices[i];
+	}
+	else
+	{
+		printf("Boot select detect: UART (val = 0x%x)\n", val);
+		spl_boot_list[0] = BOOT_DEVICE_UART;
+	}
 }
 #endif
 
