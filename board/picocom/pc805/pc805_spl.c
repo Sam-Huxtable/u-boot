@@ -193,6 +193,21 @@ u32 nand_spl_adjust_offset(u32 sector, u32 offs)
 }
 
 #ifdef CONFIG_SPL
+bool pc805_spl_is_uartboot(void)
+{
+	/* read gpio31 value to determine boot type:
+	 * 0. UART boot
+	 * 1. NAND boot
+	 */
+	u32 val = 0;
+	writel((0x1 << 31), (void __iomem *)0x8202018);
+	mdelay(1);
+	val = readl((void __iomem *)0x8202028);
+	printf("Boot select detect: register val = 0x%x\n", val);
+
+	return (val & (0x01 << 31)) ? false : true;
+}
+
 void board_boot_order(u32 *spl_boot_list)
 {
 	u8 i;
@@ -211,25 +226,13 @@ void board_boot_order(u32 *spl_boot_list)
 #endif
 	};
 
-	/* read gpio0 value to determine boot type:
-	 * 0. UART boot
-	 * 1. NAND boot
-	 */
-	u32 val = 0;
-	writel(0x1, (void __iomem *)0x8202018);
-	mdelay(1);
-	val = readl((void __iomem *)0x8202028);
-	if(val & 0x01)
+	if(pc805_spl_is_uartboot())
 	{
-		printf("Boot select detect: NAND (val = 0x%x)\n", val);
-		for (i = 0; i < ARRAY_SIZE(boot_devices); i++)
-			spl_boot_list[i] = boot_devices[i];
-	}
-	else
-	{
-		printf("Boot select detect: UART (val = 0x%x)\n", val);
 		spl_boot_list[0] = BOOT_DEVICE_UART;
+		return;
 	}
+	for (i = 0; i < ARRAY_SIZE(boot_devices); i++)
+		spl_boot_list[i] = boot_devices[i];
 }
 #endif
 
