@@ -34,6 +34,7 @@ void board_spinand_init(void)
 	mtd = dev_get_uclass_priv(dev);
 }
 
+extern int riscv_get_time(u64 *time);
 #define PC805_PLMT_CYCLES_HZ	(30720000)
 #define PC805_PLMT_CYCLES_MS	(PC805_PLMT_CYCLES_HZ / 1000)
 #define PC805_PLMT_CYCLES_US	(PC805_PLMT_CYCLES_MS / 1000)

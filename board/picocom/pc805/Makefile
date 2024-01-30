@@ -8,9 +8,10 @@ ifdef CONFIG_SPL_BUILD
 obj-y	+= pc805_spl.o
 
 ifeq ($(PICO_VFW_LIB_PATH),)
-$(warning no define PICO_VFW_LIB_PATH environment parameter, please config it firstly)
+PICO_VFW_LIB_PATH = /build/tmp/work/riscv32-poky-linux/vfw4spl/1.0-r0
+$(warning no define PICO_VFW_LIB_PATH environment parameter, default path enabled and need users confirm valid: $(PICO_VFW_LIB_PATH))
 endif
 
-KBUILD_CFLAGS += -I/build/tmp/work/riscv32-poky-linux/vfw4spl/1.0-r0
-KBUILD_LDFLAGS += --whole-archive  /build/tmp/work/riscv32-poky-linux/vfw4spl/1.0-r0/libpc805_vfw4spl.a  --no-whole-archive
+KBUILD_CFLAGS += -I$(PICO_VFW_LIB_PATH)
+KBUILD_LDFLAGS += --whole-archive  $(PICO_VFW_LIB_PATH)/libpc805_vfw4spl.a  --no-whole-archive
 endif
