@@ -64,6 +64,35 @@ static const struct mtd_ooblayout_ops w25m02gv_ooblayout = {
 	.rfree = w25m02gv_ooblayout_free,
 };
 
+static int w25n02kv_ooblayout_ecc(struct mtd_info *mtd, int section,
+				  struct mtd_oob_region *region)
+{
+	if (section > 3)
+		return -ERANGE;
+
+	region->offset = 64 + (16 * section);
+	region->length = 13;
+
+	return 0;
+}
+
+static int w25n02kv_ooblayout_free(struct mtd_info *mtd, int section,
+				   struct mtd_oob_region *region)
+{
+	if (section > 3)
+		return -ERANGE;
+
+	region->offset = (16 * section) + 2;
+	region->length = 14;
+
+	return 0;
+}
+
+static const struct mtd_ooblayout_ops w25n02kv_ooblayout = {
+	.ecc = w25n02kv_ooblayout_ecc,
+	.rfree = w25n02kv_ooblayout_free,
+};
+
 static int w25m02gv_select_target(struct spinand_device *spinand,
 				  unsigned int target)
 {
@@ -96,6 +125,22 @@ static const struct spinand_info winbond_spinand_table[] = {
 					      &update_cache_variants),
 		     0,
 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
+	SPINAND_INFO("W25N02KV", 0xAA,
+		     NAND_MEMORG(1, 2048, 128, 64, 2048, 1, 1, 1),
+		     NAND_ECCREQ(8, 512),
+		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+					      &write_cache_variants,
+					      &update_cache_variants),
+		     0,
+		     SPINAND_ECCINFO(&w25n02kv_ooblayout, NULL)),
+	SPINAND_INFO("W25N04KW", 0xBA,
+		     NAND_MEMORG(1, 2048, 128, 64, 2048, 1, 2, 1),
+		     NAND_ECCREQ(8, 512),
+		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+					      &write_cache_variants,
+					      &update_cache_variants),
+		     0,
+		     SPINAND_ECCINFO(&w25n02kv_ooblayout, NULL)),
 };
 
 /**
@@ -112,11 +157,11 @@ static int winbond_spinand_detect(struct spinand_device *spinand)
 	 * Winbond SPI NAND read ID need a dummy byte,
 	 * so the first byte in raw_id is dummy.
 	 */
-	if (id[1] != SPINAND_MFR_WINBOND)
+	if (id[0] != SPINAND_MFR_WINBOND)
 		return 0;
 
 	ret = spinand_match_and_init(spinand, winbond_spinand_table,
-				     ARRAY_SIZE(winbond_spinand_table), id[2]);
+				     ARRAY_SIZE(winbond_spinand_table), id[1]);
 	if (ret)
 		return ret;
 
