@@ -35,4 +35,19 @@ config BOARD_SPECIFIC_OPTIONS # dummy
 	imply SPL_RAM_SUPPORT
 	imply SPL_RAM_DEVICE
 
+config SPL_LPDDR4_ISSI_ECC_ERR_ON
+    bool "LPDDR4 ISSI on-chip ecc and error indication enable"
+    depends on SPL
+    default n
+
+config SPL_LPDDR4_INLINE_ECC_ENABLE
+    bool "LPDDR4 enable inline ecc"
+    depends on SPL
+    default n
+
+config SPL_LPDDR4_TOTAL_SIZE
+    int "LPDDR4 size for mega bytes"
+    depends on SPL
+    default 512
+
 endif
