@@ -197,7 +197,7 @@ static const struct spinand_info gigadevice_spinand_table[] = {
 		     0,
 		     SPINAND_ECCINFO(&gd5fxgq4xexxg_ooblayout,
 				     gd5fxgq4xexxg_ecc_get_status)),
-	SPINAND_INFO("GD5F4GQ6RExxG", 0x45,
+	SPINAND_INFO("GD5F4GQ6RExxG", 0x40,
 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 1, 2, 1),
 		     NAND_ECCREQ(4, 512),
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_2gq5,
