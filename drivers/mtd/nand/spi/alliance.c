@@ -6,8 +6,9 @@
 #ifndef __UBOOT__
 #include <linux/device.h>
 #include <linux/kernel.h>
-#include <linux/mtd/spinand.h>
+
 #endif
+#include <linux/mtd/spinand.h>							  
 
 #define SPINAND_MFR_ALLIANCE		0x52
 
