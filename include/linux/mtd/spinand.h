@@ -291,10 +291,10 @@ struct spinand_info {
 	}
 
 #define SPINAND_ECCINFO(__ooblayout, __get_status)			\
-	.eccinfo = {							\
+	{.eccinfo = {							\
 		.ooblayout = __ooblayout,				\
 		.get_status = __get_status,				\
-	}
+	}}
 
 #define SPINAND_SELECT_TARGET(__func)					\
 	.select_target = __func,
