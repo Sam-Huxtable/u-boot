@@ -6,7 +6,7 @@
 #ifndef __UBOOT__
 #include <linux/device.h>
 #include <linux/kernel.h>
-
+#include <malloc.h>
 #endif
 #include <linux/mtd/spinand.h>							  
 
