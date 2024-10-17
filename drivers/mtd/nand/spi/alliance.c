@@ -93,6 +93,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
+		     0,
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 2Gb 3.3V */
 	SPINAND_INFO("AS5F32G04SND-08LIN",
@@ -102,6 +103,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
+		     0,
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 2Gb 1.8V */
 	SPINAND_INFO("AS5F12G04SND-10LIN",
@@ -111,6 +113,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
+		     0,
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 4Gb 3.3V */
 	SPINAND_INFO("AS5F34G04SND-08LIN",
@@ -120,6 +123,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
+		     0,
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 4Gb 1.8V */			     
 	SPINAND_INFO("AS5F14G04SND-10LIN",
@@ -129,6 +133,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
+		     0,
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 8Gb 3.3V */
 	SPINAND_INFO("AS5F38G04SND-08LIN",
@@ -138,6 +143,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
+		     0,
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 8Gb 1.8V */			     
 	SPINAND_INFO("AS5F18G04SND-10LIN",
@@ -147,6 +153,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
+		     0,
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 };
 
