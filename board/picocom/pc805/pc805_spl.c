@@ -15,6 +15,7 @@
 #include <asm/io.h>
 #include <linux/delay.h>
 
+#include "pc805_address.h"
 #include "pc805_vfw4spl.h"
 
 static struct mtd_info *mtd;
@@ -34,6 +35,7 @@ void board_spinand_init(void)
 	mtd = dev_get_uclass_priv(dev);
 }
 
+extern int riscv_get_time(u64 *time);
 #define PC805_PLMT_CYCLES_HZ	(30720000)
 #define PC805_PLMT_CYCLES_MS	(PC805_PLMT_CYCLES_HZ / 1000)
 #define PC805_PLMT_CYCLES_US	(PC805_PLMT_CYCLES_MS / 1000)
@@ -59,14 +61,103 @@ void __udelay(unsigned long usec)
 	}
 }
 
+#if CONFIG_SPL_LPDDR4_ISSI_ECC_ERR_ON
+#define LPDDR4_ISSI_REG_MR33    33
+#define LPDDR4_ISSI_REG_MR34    34
+#endif
+
+unsigned char lpddr4_mr_reg_read(unsigned char addr)
+{
+    unsigned int rdata;
+
+    //loop waiting if write busy. mrstat reg bit0
+    while ((readl((void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRSTAT_REG_OFFSET)) & 0x1) != 0);
+
+    //setting mr reg addr
+    writel(0xff00 & (addr << 8), (void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL1_REG_OFFSET));
+
+    //trigger read operation. bit0: 0 write; 1 read. bit4 for rank, pc805 has 1 rank. bit31 0->1 to trigger
+    writel((0x1 | (1<<4)), (void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL0_REG_OFFSET));
+    writel((0x1 | (1<<4) | (1<<31)), (void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL0_REG_OFFSET));
+
+    //loop waiting until complete
+    while ((readl((void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL0_REG_OFFSET)) >> 31) == 0x1);
+
+    //read mr reg data
+    rdata = readl((void __iomem *)(DDR_SYS_CTRL_ADDR + MRR_DATA0_REG_OFFSET));
+
+    return (rdata & 0xff);
+}
+
+void lpddr4_mr_reg_write(unsigned char addr, unsigned char val)
+{
+    //loop waiting if write busy. mrstat reg bit0
+    while ((readl((void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRSTAT_REG_OFFSET)) & 0x1) != 0);
+
+    //setting mr reg addr and value
+    writel((0xff00 & (addr << 8)) | (0xff & val), (void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL1_REG_OFFSET));
+
+    //trigger read operation. bit0: 0 write; 1 read. bit4 for rank, pc805 has 1 rank. bit31 0->1 to trigger
+    writel((1<<4), (void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL0_REG_OFFSET));
+    writel(((1<<4) | (1<<31)), (void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL0_REG_OFFSET));
+
+    //loop waiting until complete
+    while ((readl((void __iomem *)(DDR_UMCTRL_ADDR + UMCTRL_MRCTRL0_REG_OFFSET)) >> 31) == 0x1);
+}
+
+pc805_ddr_rank_size_t board_get_lpddr4_size_by_conf(void)
+{
+    pc805_ddr_rank_size_t ddr_size;
+
+    switch (CONFIG_SPL_LPDDR4_TOTAL_SIZE) {
+        case 128:
+            ddr_size = DDR_RANK_128MBYTE;
+            break;
+        case 256:
+            ddr_size = DDR_RANK_256MBYTE;
+            break;
+        case 384:
+            ddr_size = DDR_RANK_384MBYTE;
+            break;
+        case 768:
+            ddr_size = DDR_RANK_768MBYTE;
+            break;
+        case 1024:
+            ddr_size = DDR_RANK_1024MBYTE;
+            break;
+        case 1536:
+            ddr_size = DDR_RANK_1536MBYTE;
+            break;
+        case 2048:
+            ddr_size = DDR_RANK_2048MBYTE;
+            break;
+        default: //512MB
+            ddr_size = DDR_RANK_512MBYTE;
+            break;
+    }
+
+    return ddr_size;
+}
+
 void board_init_f(ulong dummy)
 {
     int ret;
+    pc805_ddr_rank_size_t ddr_size;
+    bool inline_ecc = false;
 
-#if 1
+    ddr_size = board_get_lpddr4_size_by_conf();
+#if CONFIG_SPL_LPDDR4_INLINE_ECC_ENABLE
+    inline_ecc = true;
+#endif
+
     vfw_cpu_crg_init();
     vfw_sys_crg_init();
-    vfw_init_ddr();
+    vfw_init_ddr(ddr_size, inline_ecc);
+
+#if CONFIG_SPL_LPDDR4_ISSI_ECC_ERR_ON
+    //default on-chip ecc enabled
+    //consider how to handle err indication signal on the board and open it as requirement
+    vfw_ddr_mr_write(LPDDR4_ISSI_REG_MR33, 0xc0); //Enable ECCON and ERRON
 #endif
 
     ret = spl_early_init();
@@ -77,6 +168,11 @@ void board_init_f(ulong dummy)
     arch_cpu_init_dm();
 
     preloader_console_init();
+
+    printf("lpddr4 size %d, inline ecc %d\n", ddr_size, inline_ecc);
+#if CONFIG_SPL_LPDDR4_ISSI_ECC_ERR_ON
+    printf("lpddr4 ISSI. MR33 0x%x, MR34 0x%x\n", lpddr4_mr_reg_read(LPDDR4_ISSI_REG_MR33), lpddr4_mr_reg_read(LPDDR4_ISSI_REG_MR34));
+#endif
 }
 
 /* nand_init() - initialize data to make nand usable by SPL */
