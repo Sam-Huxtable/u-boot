@@ -2,12 +2,8 @@
 /*
  * Copyright (c) 2020 AllianceMemory.
  *
-											 
-													
  */
-
 #ifndef __UBOOT__
-				   
 #include <linux/device.h>
 #include <linux/kernel.h>
 
@@ -15,14 +11,8 @@
 #include <linux/mtd/spinand.h>							  
 
 #define SPINAND_MFR_ALLIANCE		0x52
-												   
-												 
 
 #define STATUS_ECC_LIMIT_BITFLIPS (3 << 4)
-
-												   
-												 
-									   
 
 static SPINAND_OP_VARIANTS(read_cache_variants,
 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
@@ -31,14 +21,6 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
 		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
 		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
-
-													
-														
-													
-														
-													
-													   
-														 
 
 static SPINAND_OP_VARIANTS(write_cache_variants,
 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
@@ -75,116 +57,25 @@ static int alliance_ooblayout_free(struct mtd_info *mtd, int section,
 
 static const struct mtd_ooblayout_ops alliance_ooblayout = {
 	.ecc = alliance_ooblayout_ecc,
-	.free = alliance_ooblayout_free,
+	.rfree = alliance_ooblayout_free,
 };
 
 static int alliance_ecc_get_status(struct spinand_device *spinand,
 				   u8 status)
 {
-			
-																		 
-					  
-		 
-
 	switch (status & STATUS_ECC_MASK) {
 	case STATUS_ECC_NO_BITFLIPS:
 		return 0;
-
-										 
-	
-														   
-					 
-	 
-											 
-		  
-			  
-
-	
-														 
-										 
-	 
-															   
-											
-									  
-
-									   
-		   
 
 	case STATUS_ECC_UNCOR_ERROR:
 		return -EBADMSG;
 
 	case STATUS_ECC_HAS_BITFLIPS:
 		return 1;
-  
 
 	case STATUS_ECC_LIMIT_BITFLIPS:
- 
-
-																 
-									
-									   
-  
-
-																			 
-										 
- 
-			 
 		return 3;
 
-					 
-					 
-
-		  
- 
-
-																			  
-								   
- 
-			 
-				 
-
-								   
-					
-					 
-
-		  
- 
-
-											   
-																	 
-										
-										   
-  
-
-																	   
-			   
- 
-			
-																		 
-					  
-		 
-
-									
-							 
-		   
-
-										 
-	
-														   
-					 
-	 
-											 
-		  
-			  
-
-	
-											 
-	 
-													
-												
-
-							 
-				  
 
 	default:
 		break;
@@ -247,7 +138,6 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
-		 
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 8Gb 1.8V */			     
 	SPINAND_INFO("AS5F18G04SND-10LIN",
@@ -258,8 +148,6 @@ static const struct spinand_info alliance_spinand_table[] = {
 					      &write_cache_variants,
 					      &update_cache_variants),
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
-													
-										
 };
 
 static int alliance_spianand_detect(struct spinand_device *spinand)
