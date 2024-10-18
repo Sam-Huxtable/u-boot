@@ -188,7 +188,7 @@ static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
 }
 
 static const struct spinand_info gigadevice_spinand_table[] = {
-	SPINAND_INFO("GD5F1GQ4UExxG", 0xd1,
+	SPINAND_INFO("GD5F1GQ4UExxG", 0x58,
 		     NAND_MEMORG(1, 2048, 128, 64, 1024, 1, 1, 1),
 		     NAND_ECCREQ(8, 512),
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
