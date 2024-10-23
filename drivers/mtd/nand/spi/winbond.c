@@ -15,7 +15,7 @@
 #include <linux/bitops.h>
 #include <linux/mtd/spinand.h>
 
-#define SPINAND_MFR_WINBOND		0xEF
+#define SPINAND_MFR_WINBOND		0x58
 
 #define WINBOND_CFG_BUF_READ		BIT(3)
 
@@ -108,7 +108,7 @@ static int w25m02gv_select_target(struct spinand_device *spinand,
 }
 
 static const struct spinand_info winbond_spinand_table[] = {
-	SPINAND_INFO("W25M02GV", 0xAB,
+	SPINAND_INFO("W25M02GV", 0xC8,
 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 1, 1, 2),
 		     NAND_ECCREQ(1, 512),
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
