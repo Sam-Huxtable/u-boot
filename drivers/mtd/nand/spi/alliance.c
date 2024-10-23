@@ -10,7 +10,7 @@
 #endif
 #include <linux/mtd/spinand.h>							  
 
-#define SPINAND_MFR_ALLIANCE		0x8c
+#define SPINAND_MFR_ALLIANCE		0x58
 
 #define STATUS_ECC_LIMIT_BITFLIPS (3 << 4)
 
@@ -147,7 +147,7 @@ static const struct spinand_info alliance_spinand_table[] = {
 		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
 	/* AS5F 8Gb 1.8V */			     
 	SPINAND_INFO("AS5F18G04SND-10LIN",
-		     0x90,
+		     0xC8,
 		     NAND_MEMORG(1, 4096, 256, 64, 4096, 1, 1, 1),
 		     NAND_ECCREQ(8, 512),
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
