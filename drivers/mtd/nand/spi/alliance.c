@@ -166,12 +166,12 @@ static int alliance_spianand_detect(struct spinand_device *spinand)
 	 * Macronix SPI NAND read ID needs a dummy byte, so the first byte in
 	 * raw_id is garbage.
 	 */
-	if (id[1] != SPINAND_MFR_ALLIANCE)
+	if (id[0] != SPINAND_MFR_ALLIANCE)
 		return 0;
 
 	ret = spinand_match_and_init(spinand, alliance_spinand_table,
 				     ARRAY_SIZE(alliance_spinand_table),
-				     id[2]);
+				     id[1]);
 	if (ret)
 		return ret;
 
