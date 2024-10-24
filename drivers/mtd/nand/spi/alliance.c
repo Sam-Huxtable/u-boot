@@ -111,7 +111,7 @@ static int alliance_spianand_detect(struct spinand_device *spinand)
 				     ARRAY_SIZE(alliance_spinand_table),
 				     &id[1]);
 	if (ret)
-		printf("return Ret:\n") 
+		printf("return Ret:\n");
 		return ret;
 
 	return 1;
