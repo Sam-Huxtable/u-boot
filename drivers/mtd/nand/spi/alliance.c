@@ -9,7 +9,7 @@
 #include <malloc.h>
 #endif
 #include <linux/mtd/spinand.h>							  
-
+#include <stdio.h>
 #define SPINAND_MFR_ALLIANCE		0x58
 
 #define STATUS_ECC_LIMIT_BITFLIPS (3 << 4)
@@ -161,7 +161,7 @@ static int alliance_spianand_detect(struct spinand_device *spinand)
 {
 	u8 *id = spinand->id.data;
 	int ret;
-
+	printf("Integer: %s, %s", id[0], id[1]);
 	/*
 	 * Macronix SPI NAND read ID needs a dummy byte, so the first byte in
 	 * raw_id is garbage.
