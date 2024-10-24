@@ -841,13 +841,14 @@ static const struct spinand_manufacturer *spinand_manufacturers[] = {
 	&micron_spinand_manufacturer,
 	&toshiba_spinand_manufacturer,
 	&winbond_spinand_manufacturer,
+	&alliance_spinand_manufacturer,
 };
 
 static int spinand_manufacturer_detect(struct spinand_device *spinand)
 {
 	unsigned int i;
 	int ret;
-
+	printf("spinand_manufacturer_detect")
 	for (i = 0; i < ARRAY_SIZE(spinand_manufacturers); i++) {
 		ret = spinand_manufacturers[i]->ops->detect(spinand);
 		if (ret > 0) {
