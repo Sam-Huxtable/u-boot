@@ -84,70 +84,8 @@ static int alliance_ecc_get_status(struct spinand_device *spinand,
 	return -EINVAL;
 }
 
-static const struct spinand_info alliance_spinand_table[] = {
-	/* AS5F 1Gb 3.3V */
-	SPINAND_INFO("AS5F31G04SND-08LIN",
-		     0x25,
-		     NAND_MEMORG(1, 2048, 64, 64, 1024, 1, 1, 1),
-		     NAND_ECCREQ(4, 512),
-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
-					      &write_cache_variants,
-					      &update_cache_variants),
-		     0,
-		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
-	/* AS5F 2Gb 3.3V */
-	SPINAND_INFO("AS5F32G04SND-08LIN",
-		     0x2E,
-		     NAND_MEMORG(1, 2048, 128, 64, 2048, 1, 1, 1),
-		     NAND_ECCREQ(8, 512),
-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
-					      &write_cache_variants,
-					      &update_cache_variants),
-		     0,
-		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
-	/* AS5F 2Gb 1.8V */
-	SPINAND_INFO("AS5F12G04SND-10LIN",
-		     0x8E,
-		     NAND_MEMORG(1, 2048, 128, 64, 2048, 1, 1, 1),
-		     NAND_ECCREQ(8, 512),
-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
-					      &write_cache_variants,
-					      &update_cache_variants),
-		     0,
-		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
-	/* AS5F 4Gb 3.3V */
-	SPINAND_INFO("AS5F34G04SND-08LIN",
-		     0x2F,
-		     NAND_MEMORG(1, 2048, 128, 64, 4096, 1, 1, 1),
-		     NAND_ECCREQ(8, 512),
-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
-					      &write_cache_variants,
-					      &update_cache_variants),
-		     0,
-		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
-	/* AS5F 4Gb 1.8V */			     
-	SPINAND_INFO("AS5F14G04SND-10LIN",
-		     0x8F,
-		     NAND_MEMORG(1, 2048, 128, 64, 4096, 1, 1, 1),
-		     NAND_ECCREQ(8, 512),
-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
-					      &write_cache_variants,
-					      &update_cache_variants),
-		     0,
-		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
-	/* AS5F 8Gb 3.3V */
-	SPINAND_INFO("AS5F38G04SND-08LIN",
-		     0x2D,
-		     NAND_MEMORG(1, 4096, 256, 64, 4096, 1, 1, 1),
-		     NAND_ECCREQ(8, 512),
-		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
-					      &write_cache_variants,
-					      &update_cache_variants),
-		     0,
-		     SPINAND_ECCINFO(&alliance_ooblayout, alliance_ecc_get_status)),
-	/* AS5F 8Gb 1.8V */			     
-	SPINAND_INFO("AS5F18G04SND-10LIN",
-		     0x8D,
+static const struct spinand_info alliance_spinand_table[] = {		     
+	SPINAND_INFO("AS5F18G04SND-10LIN", 0x8D,
 		     NAND_MEMORG(1, 4096, 256, 64, 4096, 1, 1, 1),
 		     NAND_ECCREQ(8, 512),
 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
@@ -173,6 +111,7 @@ static int alliance_spianand_detect(struct spinand_device *spinand)
 				     ARRAY_SIZE(alliance_spinand_table),
 				     &id[1]);
 	if (ret)
+		printf("return Ret:\n") 
 		return ret;
 
 	return 1;
