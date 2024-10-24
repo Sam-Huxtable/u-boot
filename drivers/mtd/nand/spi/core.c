@@ -851,7 +851,9 @@ static int spinand_manufacturer_detect(struct spinand_device *spinand)
 	printf("spinand_manufacturer_detect\n");
 	for (i = 0; i < ARRAY_SIZE(spinand_manufacturers); i++) {
 		ret = spinand_manufacturers[i]->ops->detect(spinand);
+		printf("ret: %d/n",ret);
 		if (ret > 0) {
+			printf("Help\n");
 			spinand->manufacturer = spinand_manufacturers[i];
 			return 0;
 		} else if (ret < 0) {
