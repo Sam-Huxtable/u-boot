@@ -932,37 +932,51 @@ int spinand_match_and_init(struct spinand_device *spinand,
 {
 	struct nand_device *nand = spinand_to_nand(spinand);
 	unsigned int i;
-
+	printf("111\n");
 	for (i = 0; i < table_size; i++) {
 		const struct spinand_info *info = &table[i];
 		const struct spi_mem_op *op;
+		printf("222\n");
 
 		if (devid != info->devid)
 			continue;
+		printf("333\n");
 
 		nand->memorg = table[i].memorg;
 		nand->eccreq = table[i].eccreq;
 		spinand->eccinfo = table[i].eccinfo;
 		spinand->flags = table[i].flags;
 		spinand->select_target = table[i].select_target;
+		printf("444\n");
 
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.read_cache);
+		printf("555\n");
+
 		if (!op)
 			return -ENOTSUPP;
+		printf("666\n");
 
 		spinand->op_templates.read_cache = op;
+		printf("777\n");
 
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.write_cache);
+		printf("888\n");
+
 		if (!op)
 			return -ENOTSUPP;
+		printf("999\n");
 
 		spinand->op_templates.write_cache = op;
+		printf("10101\n");
 
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.update_cache);
+		printf("11111\n");
+
 		spinand->op_templates.update_cache = op;
+		printf("12121\n");
 
 		return 0;
 	}
