@@ -23,8 +23,7 @@ static const char *get_mtdids(void)
 {
 	__maybe_unused const char *mtdparts = NULL;
 	const char *mtdids = env_get("mtdids");
-	printf("hi\n");
-	printf("%s/n", mtdids);
+	
 	if (mtdids)
 		return mtdids;
 
