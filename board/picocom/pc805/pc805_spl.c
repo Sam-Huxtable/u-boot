@@ -24,7 +24,6 @@ void board_spinand_init(void)
 {
 	struct udevice *dev;
 	int ret;
-	printf("pc805_spl.c  ");
 	ret = uclass_get_device_by_driver(UCLASS_MTD,
 					  DM_GET_DRIVER(spinand), &dev);
 	if (ret && ret != -ENODEV) {
