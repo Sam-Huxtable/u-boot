@@ -212,7 +212,7 @@ static int gigadevice_spinand_detect(struct spinand_device *spinand)
 {
 	u8 *id = spinand->id.data;
 	int ret;
-	printf("Giga: %s, %s", id[0], id[1]);
+	printf("Giga: %x, %x\n", id[0], id[1]);
 	/*
 	 * For GD NANDs, There is an address byte needed to shift in before IDs
 	 * are read out, so the first byte in raw_id is dummy.
