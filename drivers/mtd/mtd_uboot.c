@@ -13,6 +13,7 @@
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/partitions.h>
 #include <mtd.h>
+#include <stdio.h>
 
 #define MTD_NAME_MAX_LEN 20
 
@@ -22,7 +23,8 @@ static const char *get_mtdids(void)
 {
 	__maybe_unused const char *mtdparts = NULL;
 	const char *mtdids = env_get("mtdids");
-
+	printf("hi\n");
+	printf("%s/n", mtdids)
 	if (mtdids)
 		return mtdids;
 
