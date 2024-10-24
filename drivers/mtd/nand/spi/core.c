@@ -30,6 +30,7 @@
 #include <linux/bug.h>
 #include <linux/mtd/spinand.h>
 #endif
+#include <stdio.h>
 
 /* SPI NAND index visible in MTD names */
 static int spi_nand_idx;
@@ -452,6 +453,7 @@ out:
 
 static int spinand_read_id_op(struct spinand_device *spinand, u8 *buf)
 {
+	printf("SPINAND_READ_ID_OP");
 	struct spi_mem_op op = SPINAND_READID_OP(1, spinand->scratchbuf,
 						 SPINAND_MAX_ID_LEN);
 	int ret;
