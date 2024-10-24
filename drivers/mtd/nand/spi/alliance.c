@@ -161,7 +161,7 @@ static int alliance_spianand_detect(struct spinand_device *spinand)
 {
 	u8 *id = spinand->id.data;
 	int ret;
-	printf("Alliance: %h : %h"/n, id[0], id[1]);
+	printf("Alliance: %h : %h\n", id[0], id[1]);
 	/*
 	 * Macronix SPI NAND read ID needs a dummy byte, so the first byte in
 	 * raw_id is garbage.
