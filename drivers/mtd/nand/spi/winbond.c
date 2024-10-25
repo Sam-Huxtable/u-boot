@@ -15,7 +15,7 @@
 #include <linux/bitops.h>
 #include <linux/mtd/spinand.h>
 
-#define SPINAND_MFR_WINBOND		0x52
+#define SPINAND_MFR_WINBOND		0x5
 
 #define WINBOND_CFG_BUF_READ		BIT(3)
 
