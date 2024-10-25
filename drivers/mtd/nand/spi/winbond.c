@@ -15,7 +15,7 @@
 #include <linux/bitops.h>
 #include <linux/mtd/spinand.h>
 
-#define SPINAND_MFR_WINBOND		0x5
+#define SPINAND_MFR_WINBOND		0x52
 
 #define WINBOND_CFG_BUF_READ		BIT(3)
 
@@ -191,7 +191,7 @@ static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
 	.init = winbond_spinand_init,
 };
 
-const struct spinand_manufacturer winbond_spinand_manufacturer = {
+const struct spinand_manufacturer alliance_spinand_manufacturer = {
 	.id = SPINAND_MFR_WINBOND,
 	.name = "Winbond",
 	.ops = &winbond_spinand_manuf_ops,
