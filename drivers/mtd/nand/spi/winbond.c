@@ -243,7 +243,7 @@ static int winbond_spinand_init(struct spinand_device *spinand)
 
 static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
 	.detect = winbond_spinand_detect,
-	.init = winbond_spinand_init,
+	//.init = winbond_spinand_init,
 };
 
 const struct spinand_manufacturer alliance_spinand_manufacturer = {
