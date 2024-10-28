@@ -105,9 +105,9 @@ static int alliance_spianand_detect(struct spinand_device *spinand)
 	 * raw_id is garbage.
 	 */
 	if (id[0] != SPINAND_MFR_ALLIANCE)
-		printf("SPINAND_MFR_ALLIANCE failed\n");
 		return 0;
-
+	
+	printf("SPINAND_MFR_ALLIANCE Passed\n");
 	ret = spinand_match_and_init(spinand, alliance_spinand_table,
 				     ARRAY_SIZE(alliance_spinand_table),
 				     id[1]);
