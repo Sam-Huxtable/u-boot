@@ -453,11 +453,10 @@ out:
 
 static int spinand_read_id_op(struct spinand_device *spinand, u8 *buf)
 {
-	printf("SPINAND_READ_ID_OP1\n");
 	struct spi_mem_op op = SPINAND_READID_OP(1, spinand->scratchbuf,
 						 SPINAND_MAX_ID_LEN);
 	int ret;
-	printf("SPINAND_READ_ID_OP2\n");
+
 	ret = spi_mem_exec_op(spinand->slave, &op);
 	if (!ret)
 		memcpy(buf, spinand->scratchbuf, SPINAND_MAX_ID_LEN);
@@ -848,12 +847,9 @@ static int spinand_manufacturer_detect(struct spinand_device *spinand)
 {
 	unsigned int i;
 	int ret;
-	printf("spinand_manufacturer_detect\n");
 	for (i = 0; i < ARRAY_SIZE(spinand_manufacturers); i++) {
 		ret = spinand_manufacturers[i]->ops->detect(spinand);
-		printf("ret: %d/n",ret);
 		if (ret > 0) {
-			printf("Help\n");
 			spinand->manufacturer = spinand_manufacturers[i];
 			return 0;
 		} else if (ret < 0) {
@@ -934,52 +930,39 @@ int spinand_match_and_init(struct spinand_device *spinand,
 {
 	struct nand_device *nand = spinand_to_nand(spinand);
 	unsigned int i;
-	printf("111\n");
 	for (i = 0; i < table_size; i++) {
 		const struct spinand_info *info = &table[i];
 		const struct spi_mem_op *op;
-		printf("222\n");
-		printf("DEVID: %x\n",devid);
-		printf("INFO: %x\n", info->devid);
+		
 		if (devid != info->devid)
 			continue;
-		printf("333\n");
 
 		nand->memorg = table[i].memorg;
 		nand->eccreq = table[i].eccreq;
 		spinand->eccinfo = table[i].eccinfo;
 		spinand->flags = table[i].flags;
 		spinand->select_target = table[i].select_target;
-		printf("444\n");
 
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.read_cache);
-		printf("555\n");
 
 		if (!op)
-			return -ENOTSUPP;
-		printf("666\n");
+			return -ENOTSUPP;;
 
 		spinand->op_templates.read_cache = op;
-		printf("777\n");
 
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.write_cache);
-		printf("888\n");
 
 		if (!op)
 			return -ENOTSUPP;
-		printf("999\n");
 
 		spinand->op_templates.write_cache = op;
-		printf("10101\n");
 
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.update_cache);
-		printf("11111\n");
 
 		spinand->op_templates.update_cache = op;
-		printf("12121\n");
 
 		return 0;
 	}
