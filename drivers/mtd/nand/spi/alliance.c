@@ -113,7 +113,7 @@ static int alliance_spianand_detect(struct spinand_device *spinand)
 	if (ret)
 		printf("return Ret:\n");
 		return ret;
-
+	printf("Device Init'd\n");
 	return 1;
 }
 
