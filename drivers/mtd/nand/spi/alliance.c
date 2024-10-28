@@ -121,7 +121,7 @@ static const struct spinand_manufacturer_ops alliance_spinand_manuf_ops = {
 	.detect = alliance_spianand_detect,
 };
 
-const struct spinand_manufacturer winbond_spinand_manufacturer = {
+const struct spinand_manufacturer alliance_spinand_manufacturer = {
 	.id = SPINAND_MFR_ALLIANCE,
 	.name = "Alliance",
 	.ops = &alliance_spinand_manuf_ops,
