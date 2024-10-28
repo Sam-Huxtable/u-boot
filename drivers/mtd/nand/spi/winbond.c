@@ -246,8 +246,8 @@ static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
 	//.init = winbond_spinand_init,
 };
 
-const struct spinand_manufacturer alliance_spinand_manufacturer = {
-	.id = SPINAND_MFR_ALLIANCE,
-	.name = "Alliance",
+const struct spinand_manufacturer winbond_spinand_manufacturer = {
+	.id = SPINAND_MFR_WINBOND,
+	.name = "Winbond",
 	.ops = &winbond_spinand_manuf_ops,
 };
