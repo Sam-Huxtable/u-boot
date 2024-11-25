@@ -33,7 +33,7 @@ static int mx35lfxge4ab_ooblayout_ecc(struct mtd_info *mtd, int section,
 				      struct mtd_oob_region *region)
 {
 	return -ERANGE;
-}
+};
 
 static int mx35lfxge4ab_ooblayout_free(struct mtd_info *mtd, int section,
 				       struct mtd_oob_region *region)
@@ -45,7 +45,7 @@ static int mx35lfxge4ab_ooblayout_free(struct mtd_info *mtd, int section,
 	region->length = mtd->oobsize - 2;
 
 	return 0;
-}
+};
 
 static const struct mtd_ooblayout_ops mx35lfxge4ab_ooblayout = {
 	.ecc = mx35lfxge4ab_ooblayout_ecc,
@@ -60,7 +60,7 @@ static int mx35lf1ge4ab_get_eccsr(struct spinand_device *spinand, u8 *eccsr)
 					  SPI_MEM_OP_DATA_IN(1, eccsr, 1));
 
 	return spi_mem_exec_op(spinand->slave, &op);
-}
+};
 
 static int mx35lf1ge4ab_ecc_get_status(struct spinand_device *spinand,
 				       u8 status)
@@ -94,7 +94,7 @@ static int mx35lf1ge4ab_ecc_get_status(struct spinand_device *spinand,
 	}
 
 	return -EINVAL;
-}
+};
 
 static const struct spinand_info macronix_spinand_table[] = {
 	SPINAND_INFO("MX35LF1GE4AB", 0x12,
@@ -144,7 +144,7 @@ static int macronix_spinand_detect(struct spinand_device *spinand)
 		return ret;
 
 	return 1;
-}
+};
 
 static const struct spinand_manufacturer_ops macronix_spinand_manuf_ops = {
 	.detect = macronix_spinand_detect,
