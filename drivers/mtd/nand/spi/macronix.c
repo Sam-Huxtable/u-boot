@@ -136,12 +136,12 @@ static int macronix_spinand_detect(struct spinand_device *spinand)
 	 * raw_id is garbage.
 	 */
 	printf("Macronix: %d : %d/n", id[1], id[2]);
-	if (id[1] != SPINAND_MFR_MACRONIX)
+	if (id[0] != SPINAND_MFR_MACRONIX)
 		return 0;
 
 	ret = spinand_match_and_init(spinand, macronix_spinand_table,
 				     ARRAY_SIZE(macronix_spinand_table),
-				     id[2]);
+				     id[1]);
 	if (ret)
 		return ret;
 
