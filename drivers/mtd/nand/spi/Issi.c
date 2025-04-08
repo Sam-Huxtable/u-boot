@@ -109,7 +109,7 @@ static int issi_spinand_detect(struct spinand_device *spinand)
     if (id[0] != SPINAND_MFR_issi)
         return 0;
 	
-    
+    printf("ISSI: %d : %d/n", id[1], id[2]);
     ret = spinand_match_and_init(spinand, issi_spinand_table,
                     ARRAY_SIZE(issi_spinand_table),
                     &id[1]);
