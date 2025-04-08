@@ -91,8 +91,6 @@ statuc int IS37SMW04G8B_ecc_get_status(struct spinand_device *spinand, uint8_t s
 }
 
 static const struct spinand_info issi_spinand_table[] = {
-    //OOB 128 Byte. If ecc enable, OOB[63:0], other 64B reserved to ecc
-    //OOB[0] is reserved for bad block marked
     SPINAND_INFO("IS37SMW04G8B", 0x35,
              NAND_MEMORG(1, 2048, 128, 64, 2048, 0, 2, 1),
              NAND_ECCREQ(8, 512),
@@ -100,7 +98,7 @@ static const struct spinand_info issi_spinand_table[] = {
 					      &write_cache_variants,
 					      &update_cache_variants),
              0,
-             SPINAND_ECCINFO(&Issi_ooblayout, IS37SMW04G8B_ecc_get_status),
+             SPINAND_ECCINFO(&Issi_ooblayout, IS37SMW04G8B_ecc_get_status)),
 };
 
 static int issi_spinand_detect(struct spinand_device *spinand)
