@@ -1,9 +1,10 @@
-#include <stdint.h>
-#include "spi_nand.h"
-#include "nand.h"
-#ifndef DEBUG_NAND_TEST_EN
-#include "soc.h"
+#ifndef __UBOOT__
+#include <linux/device.h>
+#include <linux/kernel.h>
+#include <malloc.h>
 #endif
+#include <linux/mtd/spinand.h>							  
+#include <stdio.h>
 
 
 #define SPINAND_MFR_issi			0x9D
