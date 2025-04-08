@@ -72,7 +72,7 @@ static const struct mtd_ooblayout_ops Issi_ooblayout = {
 	.rfree = Issi_ooblayout_free,
 };
 
-statuc int IS37SMW04G8B_ecc_get_status(struct spinand_device *spinand, uint8_t status)
+static int IS37SMW04G8B_ecc_get_status(struct spinand_device *spinand, uint8_t status)
 {
         
 	switch (status & AM_STATUS_ECC_BITMASK) {
