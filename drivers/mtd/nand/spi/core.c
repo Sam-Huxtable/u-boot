@@ -935,10 +935,10 @@ int spinand_match_and_init(struct spinand_device *spinand,
 	for (i = 0; i < table_size; i++) {
 		const struct spinand_info *info = &table[i];
 		const struct spi_mem_op *op;
-		
+		printf("12             ");
 		if (devid != info->devid)
 			continue;
-
+		printf("22             ");
 		nand->memorg = table[i].memorg;
 		nand->eccreq = table[i].eccreq;
 		spinand->eccinfo = table[i].eccinfo;
