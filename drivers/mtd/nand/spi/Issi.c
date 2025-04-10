@@ -103,7 +103,7 @@ static const struct spinand_info issi_spinand_table[] = {
 
 static int issi_spinand_detect(struct spinand_device *spinand)
 {
-    uint8_t *id = spinand->id.data;
+    u8 *id = spinand->id.data;
     int ret;
 	printf("ISSI: %d : %d : %d/n",id[0], id[1], id[2]);
 	
