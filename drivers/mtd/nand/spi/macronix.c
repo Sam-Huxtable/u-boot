@@ -135,7 +135,7 @@ static int macronix_spinand_detect(struct spinand_device *spinand)
 	 * Macronix SPI NAND read ID needs a dummy byte, so the first byte in
 	 * raw_id is garbage.
 	 */
-	printf("Macronix: %d : %d/n", id[1], id[2]);
+	
 	if (id[0] != SPINAND_MFR_MACRONIX)
 		return 0;
 
