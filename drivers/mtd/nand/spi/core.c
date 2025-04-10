@@ -936,7 +936,7 @@ int spinand_match_and_init(struct spinand_device *spinand,
 		const struct spinand_info *info = &table[i];
 		const struct spi_mem_op *op;
 		printf("DevId:%d        ", devid);
-		printf("info:%d         ",info);
+		printf("info:%d         ",&table[i]);
 		if (devid != info->devid)
 			continue;
 		printf("22             ");
