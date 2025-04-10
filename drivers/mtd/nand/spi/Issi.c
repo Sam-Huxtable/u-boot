@@ -27,16 +27,16 @@
 #define AM_STATUS_ECC_INVALID       (7 << 4)  // 0x70 (Invalid state)
 
 static SPINAND_OP_VARIANTS(read_cache_variants,
-		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
-		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
-		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
-		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
-		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
-		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
+			SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 1, NULL, 0),
+			SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+			SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+			SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+			SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
+			SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
 
 static SPINAND_OP_VARIANTS(write_cache_variants,
-		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
-		SPINAND_PROG_LOAD(true, 0, NULL, 0));
+			SPINAND_PROG_LOAD_X4_OP(0, NULL, 0),
+			SPINAND_PROG_LOAD_OP(false, 0, NULL, 0));
 
 static SPINAND_OP_VARIANTS(update_cache_variants,
 		SPINAND_PROG_LOAD_X4(false, 0, NULL, 0),
@@ -92,8 +92,8 @@ static int IS37SMW04G8B_ecc_get_status(struct spinand_device *spinand, uint8_t s
 
 static const struct spinand_info issi_spinand_table[] = {
     SPINAND_INFO("IS37SMW04G8B", 0x35,
-             NAND_MEMORG(1, 2048, 128, 64, 2048, 0, 2, 1),
-             NAND_ECCREQ(8, 512),
+             NAND_MEMORG(1, 2048, 128, 64, 2048, 1, 2, 1),
+             NAND_ECCREQ(8, 544),
 		         SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 					      &write_cache_variants,
 					      &update_cache_variants),
