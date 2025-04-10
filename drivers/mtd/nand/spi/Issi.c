@@ -107,7 +107,7 @@ static int issi_spinand_detect(struct spinand_device *spinand)
     int ret;
 	printf("ISSI: %d : %d : %d/n",id[0], id[1], id[2]);
 	
-    if (id[2] != SPINAND_MFR_issi)
+    if (id[0] != SPINAND_MFR_issi)
         return 0;
 	
     ret = spinand_match_and_init(spinand, issi_spinand_table,
