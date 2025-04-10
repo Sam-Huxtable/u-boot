@@ -935,23 +935,22 @@ int spinand_match_and_init(struct spinand_device *spinand,
 	for (i = 0; i < table_size; i++) {
 		const struct spinand_info *info = &table[i];
 		const struct spi_mem_op *op;
-		printf("DevId:%d        ", devid);
-		printf("info:%d         ",&table[i]);
+
 		if (devid != info->devid)
 			continue;
-		printf("22             ");
+		
 		nand->memorg = table[i].memorg;
 		nand->eccreq = table[i].eccreq;
 		spinand->eccinfo = table[i].eccinfo;
 		spinand->flags = table[i].flags;
 		spinand->select_target = table[i].select_target;
-		printf("1             ");
+		
 		op = spinand_select_op_variant(spinand,
 					       info->op_variants.read_cache);
 
 		if (!op)
 			return -ENOTSUPP;;
-		printf("2             ");
+		
 		spinand->op_templates.read_cache = op;
 
 		op = spinand_select_op_variant(spinand,
@@ -959,7 +958,7 @@ int spinand_match_and_init(struct spinand_device *spinand,
 
 		if (!op)
 			return -ENOTSUPP;
-		printf("3             ");
+		
 		spinand->op_templates.write_cache = op;
 
 		op = spinand_select_op_variant(spinand,
