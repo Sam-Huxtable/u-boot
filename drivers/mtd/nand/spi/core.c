@@ -850,7 +850,6 @@ static int spinand_manufacturer_detect(struct spinand_device *spinand)
 	int ret;
 	for (i = 0; i < ARRAY_SIZE(spinand_manufacturers); i++) {
 		ret = spinand_manufacturers[i]->ops->detect(spinand);
-		printf("Mandetect RET: %d/n          ",ret);
 		if (ret > 0) {
 			spinand->manufacturer = spinand_manufacturers[i];
 			return 0;
