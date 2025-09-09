@@ -51,3 +51,8 @@ config SPL_LPDDR4_TOTAL_SIZE
     default 512
 
 endif
+
+config CMD_MEMTEST
+    bool "mtest"
+    help
+      Simple RAM read/write test
